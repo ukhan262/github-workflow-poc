@@ -1,36 +1,68 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
+name: Standard Merge Workflow
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  StandardWorkFlow:
+    name: Standard Merge Workflow
     runs-on: ubuntu-latest
+    env:
+      # SPN_CLIENT_ID: ${{ secrets.SPN_CLIENT_ID }}  # No chnage needed
+      # SPN_CLIENT_SECRET: ${{ secrets.SPN_CLIENT_SECRET }} # No chnage needed
+      # SPN_TENANT_ID: ${{ secrets.SPN_TENANT_ID }} # No chnage needed
+      # TFE_TOKEN: ${{ secrets.TFE_TOKEN }} # No chnage needed
+      # GH_TOKEN: ${{ secrets.GH_TOKEN }} # No chnage needed
+      # VAULT_ADDR: ${{ secrets.VAULT_ADDR }} # No chnage needed
+      TF_WORKSPACE_NAME: "whatever"   # No chnage needed
+      # # Update for mongodb/default vault namespace in environment secret which is for the private and public keys or if any other service need vault access. default vault-token will be created in TFE workspace.
+      # VAULT_NAMESPACE: ${{ secrets.VAULT_NAMESPACE }}
+      # # Update the mongodb/default Role in environment secret which is required to access private and public keys in vault or if any other service need vault access. default vault-token will be created in TFE workspace. 
+      # VAULT_ROLE: ${{ secrets.VAULT_ROLE }}
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+    strategy:
+      matrix:
+        environment: ["NPE", "PROD"]
+        location: ["eastus2", "centralus"]
+        
+    steps:    
+    - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+    # - uses: actions/checkout@v2
+    #   name: IaC Standard Workflow Action Checkout
+    #   with:
+    #     repository: Cloud-3-0-EMU/iac-standard-action
+    #     token: ${{ secrets.GH_TOKEN }}
+    #     path: .github/actions
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    - uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.1.2
+
+    # - name: TFE Login
+    #   uses: hashicorp/setup-terraform@v1
+    #   with:
+    #     cli_config_credentials_hostname: 'automation.humana.com'
+    #     cli_config_credentials_token: ${{ secrets.TFE_TOKEN }}
+    #     terraform_wrapper: false           
+
+    # - uses: ./.github/actions/iac_action
+    #   name: IaC PreDeployment Setup
+    #   with:
+    #     set-vault-token-in-tfe: true    
+
+    # - name: TFE Init&Plan
+    #   working-directory: ./
+    #   run: |
+    #     rm -rf *.tfstate
+    #     terraform init
+    #     terraform plan
+
+    # - name: TFE Apply
+    #   working-directory: ./
+    #   run: |
+    #     terraform apply -auto-approve
+    # - name: remove .terraform directory
+    #   run: |
+    #     rm -rf  ~/.terraform.d
