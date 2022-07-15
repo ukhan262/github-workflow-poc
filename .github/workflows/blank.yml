@@ -1,12 +1,12 @@
-name: Standard Merge Workflow
+name: Matrix Merge Workflow
 on:
   push:
     branches:
       - main
 
 jobs:
-  StandardWorkFlow:
-    name: Standard Merge Workflow
+  MatrixWorkFlow:
+    name: ubuntu-latest
     runs-on: ubuntu-latest
     env:
       # SPN_CLIENT_ID: ${{ secrets.SPN_CLIENT_ID }}  # No chnage needed
@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        environment: ["NPE", "PRD"]
+        environment: ["NPE", "Prod"]
         location: ["Eastus2", "Centralus"]
         
     steps:    
