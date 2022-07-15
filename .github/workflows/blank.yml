@@ -6,7 +6,7 @@ on:
 
 jobs:
   MatrixWorkFlow:
-    name: ubuntu-latest
+    name: WorkFlowPerEnvPerLocation
     runs-on: ubuntu-latest
     env:
       # SPN_CLIENT_ID: ${{ secrets.SPN_CLIENT_ID }}  # No chnage needed
