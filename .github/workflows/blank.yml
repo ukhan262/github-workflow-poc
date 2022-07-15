@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         environment: ["NPE", "PROD"]
-        location: ["eastus2", "centralus"]
+        location: ["Eastus2", "Centralus"]
         
     steps:    
     - uses: actions/checkout@v2
