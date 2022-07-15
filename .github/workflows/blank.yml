@@ -27,7 +27,7 @@ jobs:
         # environment: ["NPE", "Prod"]
         # location: ["Eastus2", "Centralus"]
         include:
-        - if: github.ref == 'NPE' # special value
+        - if: {{ github.ref == 'NPE' }} # special value
           environment: "NPE"                                         # regular value
           location: "Eastus2"
 
