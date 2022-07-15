@@ -24,12 +24,12 @@ jobs:
 
     strategy:
       matrix:
-        # environment: ["NPE", "Prod"]
-        # location: ["Eastus2", "Centralus"]
-        include:
-        - if: ${{ github.ref == 'NPE' }} # special value
-          environment: "NPE"                                         # regular value
-          location: "Eastus2"
+        environment: ["NPE", "Prod"]
+        location: ["Eastus2", "Centralus"]
+        # include:
+        # - if: ${{ github.ref == 'NPE' }} # special value
+        #   environment: "NPE"                                         # regular value
+        #   location: "Eastus2"
 
         # - if: contains("NPE", github.ref) # special value
         #   environment: "NPE"                                         # regular value
