@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - NPE
 
 jobs:
   MatrixWorkFlow:
@@ -23,8 +24,16 @@ jobs:
 
     strategy:
       matrix:
-        environment: ["NPE", "Prod"]
-        location: ["Eastus2", "Centralus"]
+        # environment: ["NPE", "Prod"]
+        # location: ["Eastus2", "Centralus"]
+        include:
+        - if: contains("NPE", github.ref) # special value
+          environment: ["NPE"]                                               # regular value
+          location: ["Eastus2", "Centralus"]
+
+        - if: contains("main", github.ref) # special value
+          environment: ["PRD"]                                               # regular value
+          location: ["Eastus2", "Centralus"]
         
     steps:    
     - uses: actions/checkout@v2
