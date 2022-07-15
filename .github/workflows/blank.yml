@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        environment: ["NPE", "PROD"]
+        environment: ["NPE", "PRD"]
         location: ["Eastus2", "Centralus"]
         
     steps:    
