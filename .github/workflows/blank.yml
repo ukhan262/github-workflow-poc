@@ -27,21 +27,21 @@ jobs:
         # environment: ["NPE", "Prod"]
         # location: ["Eastus2", "Centralus"]
         include:
-        - if: contains("NPE", github.ref) # special value
+        - if: github.ref == 'NPE' # special value
           environment: "NPE"                                         # regular value
           location: "Eastus2"
 
-        - if: contains("NPE", github.ref) # special value
-          environment: "NPE"                                         # regular value
-          location: "Centralus"
+        # - if: contains("NPE", github.ref) # special value
+        #   environment: "NPE"                                         # regular value
+        #   location: "Centralus"
 
-        - if: contains("main", github.ref) # special value
-          environment: "Prod"                                         # regular value
-          location: "Eastus2"
+        # - if: contains("main", github.ref) # special value
+        #   environment: "Prod"                                         # regular value
+        #   location: "Eastus2"
 
-        - if: contains("main", github.ref) # special value
-          environment: "Prod"                                         # regular value
-          location: "Centralus"
+        # - if: contains("main", github.ref) # special value
+        #   environment: "Prod"                                         # regular value
+        #   location: "Centralus"
         
     steps:    
     - uses: actions/checkout@v2
