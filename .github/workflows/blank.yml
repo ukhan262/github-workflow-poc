@@ -7,7 +7,6 @@ on:
 
 jobs:
   MatrixWorkFlowPlan:
-    environment: NPE
     name: WorkFlowPerEnvPerLocation
     runs-on: ubuntu-latest
     env:
@@ -34,32 +33,12 @@ jobs:
     name: WorkFlowPerEnvPerLocation
     runs-on: ubuntu-latest
     env:
-      TF_WORKSPACE_NAME: "Azure-CloudPlatform-Cld3Shared-AKS-${{ matrix.environment }}-${{ matrix.location }}"   # No chnage needed
-      # # Update for mongodb/default vault namespace in environment secret which is for the private and public keys or if any other service need vault access. default vault-token will be created in TFE workspace.
-      # VAULT_NAMESPACE: ${{ secrets.VAULT_NAMESPACE }}
-      # # Update the mongodb/default Role in environment secret which is required to access private and public keys in vault or if any other service need vault access. default vault-token will be created in TFE workspace. 
-      # VAULT_ROLE: ${{ secrets.VAULT_ROLE }}
+      TF_WORKSPACE_NAME: "Azure-CloudPlatform-Cld3Shared-AKS-${{ matrix.environment }}-${{ matrix.location }}"
 
     strategy:
       matrix:
         environment: ["NPE"]
         location: ["Eastus2", "Centralus"]
-        # include:
-        # - if: ${{ github.ref == 'NPE' }} # special value
-        #   environment: "NPE"                                         # regular value
-        #   location: "Eastus2"
-
-        # - if: contains("NPE", github.ref) # special value
-        #   environment: "NPE"                                         # regular value
-        #   location: "Centralus"
-
-        # - if: contains("main", github.ref) # special value
-        #   environment: "Prod"                                         # regular value
-        #   location: "Eastus2"
-
-        # - if: contains("main", github.ref) # special value
-        #   environment: "Prod"                                         # regular value
-        #   location: "Centralus"
         
     steps:    
     - uses: actions/checkout@v2
@@ -67,40 +46,7 @@ jobs:
     - run: |
         echo ${{ env.TF_WORKSPACE_NAME}}
 
-    # - uses: actions/checkout@v2
-    #   name: IaC Standard Workflow Action Checkout
-    #   with:
-    #     repository: Cloud-3-0-EMU/iac-standard-action
-    #     token: ${{ secrets.GH_TOKEN }}
-    #     path: .github/actions
-
     - uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 1.1.2
 
-    # - name: TFE Login
-    #   uses: hashicorp/setup-terraform@v1
-    #   with:
-    #     cli_config_credentials_hostname: 'automation.humana.com'
-    #     cli_config_credentials_token: ${{ secrets.TFE_TOKEN }}
-    #     terraform_wrapper: false           
-
-    # - uses: ./.github/actions/iac_action
-    #   name: IaC PreDeployment Setup
-    #   with:
-    #     set-vault-token-in-tfe: true    
-
-    # - name: TFE Init&Plan
-    #   working-directory: ./
-    #   run: |
-    #     rm -rf *.tfstate
-    #     terraform init
-    #     terraform plan
-
-    # - name: TFE Apply
-    #   working-directory: ./
-    #   run: |
-    #     terraform apply -auto-approve
-    # - name: remove .terraform directory
-    #   run: |
-    #     rm -rf  ~/.terraform.d
