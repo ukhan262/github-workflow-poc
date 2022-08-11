@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TF_WORKSPACE_NAME: "Azure-CloudPlatform-Cld3Shared-AKS-${{ matrix.environment }}-${{ matrix.location }}"   # No chnage needed
+      TEST: ${{ secrets.TEST}}
 
     strategy:
       matrix:
@@ -22,6 +23,7 @@ jobs:
 
     - run: |
         echo ${{ env.TF_WORKSPACE_NAME}}
+        echo ${{ env.TEST }}
 
     - uses: hashicorp/setup-terraform@v1
       with:
@@ -45,8 +47,7 @@ jobs:
 
     - run: |
         echo ${{ env.TF_WORKSPACE_NAME}}
-
+        
     - uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 1.1.2
-
