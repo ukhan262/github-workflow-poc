@@ -1,0 +1,13 @@
+name: Nested File Call Workflow
+on:
+  push:
+    branches:
+      - main
+      - NPE
+
+jobs:
+  job: 
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./.github/workflows/plan.yml
