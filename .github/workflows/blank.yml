@@ -7,6 +7,7 @@ on:
 
 jobs:
   MatrixWorkFlowPlan:
+    environment: NPE
     name: WorkFlowPerEnvPerLocation
     runs-on: ubuntu-latest
     env:
