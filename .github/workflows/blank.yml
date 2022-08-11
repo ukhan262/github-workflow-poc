@@ -7,7 +7,7 @@ on:
 
 jobs:
   MatrixWorkFlowPlan:
-    environment: NPE
+    environment: DeploymentSecrets
     name: WorkFlowPerEnvPerLocation
     runs-on: ubuntu-latest
     env:
