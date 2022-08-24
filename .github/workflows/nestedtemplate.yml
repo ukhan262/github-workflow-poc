@@ -1,13 +1,9 @@
-name: Nested File Call Workflow
-on:
-  push:
-    branches:
-      - main
-      - NPE
+on: [push]
 
 jobs:
-  job: 
+  hello_world_job:
     runs-on: ubuntu-latest
+    name: A job to say hello
     steps:
-    - uses: actions/checkout@v2
-    - uses: ./.github/workflows/actiion.yml
+      - uses: actions/checkout@v3
+      - uses: "./.github/actions/template"
