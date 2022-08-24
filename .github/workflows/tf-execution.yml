@@ -1,0 +1,57 @@
+name: Custom Terraform Workflow
+# Controls when the workflow will run
+
+on: 
+  workflow_call:
+    inputs:
+      tfe_token:
+        type: string
+        description: "Terraform token"
+        required: true
+      refname:
+        type: string
+        description: "ref name"
+        required: false
+      tfe_workspace_name:
+        type: string
+        description: "workspace name"
+        required: true
+      deployment_env:
+        type: string
+        required: true
+        description: "env to be deployed. values accepted are NPE or PRD"
+
+jobs:
+  TFE_SPECULATIVE_PLAN:
+    if: github.ref == 'refs/heads/${{ inputs.refname }}' || github.event.pull_request.base.ref == '${{ inputs.refname }}'
+    runs-on: ubuntu-latest
+    env:
+      TFE_TOKEN: ${{ inputs.tfe_token }} # No chnage needed
+      TF_WORKSPACE_NAME: ${{ inputs.tf_workspace_name }}  # No chnage needed
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: tfe-steps
+      uses: "./.github/actions/tfe-custom-steps"
+      with:
+        tfe_token: ${{ inputs.tfe_token }}
+        tfe_workspace_name: ${{ env.TF_WORKSPACE_NAME}}
+        run_apply: "no"  
+
+  # TFE_APPLY:
+  #   if: ${{ ( github.event_name == 'push' ) || ( github.event_name == 'workflow_dispatch') && ( github.ref_name == '${{ inputs.refname }}') }}
+  #   needs: TFE_SPECULATIVE_PLAN
+  #   environment: ${{ inputs.deployment_env }}
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     TFE_TOKEN: ${{ inputs.tfe_token }} # No chnage needed
+  #     TF_WORKSPACE_NAME: ${{ inputs.tf_workspace_name }}   # No chnage needed
+
+  #   steps:    
+  #   - uses: actions/checkout@v2
+  #   - name: tfe-steps
+  #     uses: "./.github/actions/tfe-custom-steps"
+  #     with:
+  #       tfe_token: ${{ inputs.tfe_token }}
+  #       tfe_workspace_name: ${{ env.TF_WORKSPACE_NAME}}
+  #       run_apply: "yes"
