@@ -1,3 +1,4 @@
+name: Nested Template
 on: [push]
 
 jobs:
